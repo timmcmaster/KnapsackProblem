@@ -12,10 +12,10 @@ namespace KnapsackProblem.ProblemSet
 
         public VelogamesProblemSet()
         {
-            Knapsack = new Knapsack(102, 9, false);
+            Knapsack = new Knapsack(100, 9, false);
 
-            List<Item> allRiders = LoadVelogamesDataFromFile("P:\\Temp\\CatalunyaVelogamesData.csv");
-            List<Item> rankedRiders = LoadPCSDataFromFile("P:\\Temp\\CatalunyaRidersByGC.csv");
+            List<Item> allRiders = LoadVelogamesDataFromFile("CatalunyaVelogamesData.csv");
+            List<Item> rankedRiders = LoadPCSDataFromFile("CatalunyaRidersByGC.csv");
             MatchRiders(allRiders, rankedRiders);
 
             LogFile.WriteLine("Rider, Weight, Value");

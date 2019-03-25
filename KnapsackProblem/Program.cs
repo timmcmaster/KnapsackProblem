@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KnapsackProblem.ProblemSet;
+using KnapsackProblem.Solver;
 using Microsoft.VisualBasic.FileIO;
 
 namespace KnapsackProblem
@@ -17,14 +18,16 @@ namespace KnapsackProblem
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Start...");
 
-            IProblemSet problemSet = new VelogamesProblemSet();
-            //IProblemSet problemSet = new NonConformingProblemSet();
+            //IProblemSet problemSet = new VelogamesProblemSet();
+            IProblemSet problemSet = new WikipediaProblemSet();
 
-            Calculator calculator = new Calculator(problemSet.Knapsack, problemSet.DataSet);
+            Console.WriteLine(Directory.GetCurrentDirectory());
 
-            calculator.Calculate();
+            ISolver solver = new RecursiveSolver2D(problemSet.Knapsack, problemSet.DataSet);
 
-            calculator.LogDataValues();
+            solver.Solve();
+
+            //solver.LogDataValues();
 
             Console.WriteLine("Press any key to close...");
             Console.ReadKey();

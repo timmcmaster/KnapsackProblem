@@ -22,6 +22,12 @@ namespace KnapsackProblem
             _includedItems = new List<Item>(item._includedItems);
         }
 
+        public MaxValueGroup Add(Item item)
+        {
+            _includedItems.Add(item);
+            return this;
+        }
+
         public void AddItem(Item item)
         {
             _includedItems.Add(item);

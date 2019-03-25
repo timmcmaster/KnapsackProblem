@@ -9,7 +9,7 @@ namespace KnapsackProblem
 {
     public static class LogFile
     {
-        private static string _fileName = "P:\\Temp\\KnapsackLog.txt";
+        private static string _fileName = "KnapsackLog.txt";
 
         public static void WriteLine(string logMessage)
         {
