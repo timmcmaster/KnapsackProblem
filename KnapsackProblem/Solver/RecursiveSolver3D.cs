@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace KnapsackProblem.Solver
 {
+    /// <summary>
+    /// Implements recursive dynamic programming algorithm for 0-1 knapsack problem with two objectives
+    /// see: https://ideone.com/wKzqXk
+    /// </summary>
     public class RecursiveSolver3D : ISolver
     {
         // define max values for first N items at given weight, after choosing K
@@ -56,64 +60,64 @@ namespace KnapsackProblem.Solver
 
         }
 
-        public MaxValueGroup GetMaxValue(int forFirstN, int atWeight, int itemsLeft)
+        public MaxValueGroup GetMaxValue(int forFirstN, int atWeight, int itemsChosen)
         {
             // value at 0 items or 0 weight, or 0 items chosen is 0
-            if (forFirstN == 0 || atWeight <= 0 || itemsLeft == 0)
+            if (forFirstN == 0 || atWeight <= 0 || itemsChosen == 0)
             {
                 return new MaxValueGroup();
             }
 
             // calculate the previous value
-            if (_maxValues[forFirstN - 1, atWeight, itemsLeft] is null)
+            if (_maxValues[forFirstN - 1, atWeight, itemsChosen] is null)
             {
-                _maxValues[forFirstN - 1, atWeight, itemsLeft] = GetMaxValue(forFirstN - 1, atWeight, itemsLeft);
+                _maxValues[forFirstN - 1, atWeight, itemsChosen] = GetMaxValue(forFirstN - 1, atWeight, itemsChosen);
             }
 
             // if current item weight is greater than weight being calculated, don't add the value
             if (_items[forFirstN - 1].Weight > atWeight)
             {
-                _maxValues[forFirstN, atWeight, itemsLeft] =
-                    new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsLeft]);
+                _maxValues[forFirstN, atWeight, itemsChosen] =
+                    new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
             }
             else
             {
                 MaxValueGroup withoutCurrentItem =
-                    _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight, itemsLeft - 1];
+                    _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight, itemsChosen - 1];
                 // if we haven't calculated max without current item, do it now
                 if (withoutCurrentItem is null)
                 {
                     withoutCurrentItem = GetMaxValue(forFirstN - 1, atWeight - _items[forFirstN - 1].Weight,
-                        itemsLeft - 1);
-                    _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight, itemsLeft - 1] =
+                        itemsChosen - 1);
+                    _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight, itemsChosen - 1] =
                         withoutCurrentItem;
                 }
 
                 // add item to prev
                 MaxValueGroup withCurrentItem = new MaxValueGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
 
-                if (_maxValues[forFirstN - 1, atWeight, itemsLeft].TotalValue() >= withCurrentItem.TotalValue())
+                if (_maxValues[forFirstN - 1, atWeight, itemsChosen].TotalValue() >= withCurrentItem.TotalValue())
                 {
-                    _maxValues[forFirstN, atWeight, itemsLeft] =
-                        new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsLeft]);
+                    _maxValues[forFirstN, atWeight, itemsChosen] =
+                        new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
                 }
                 else
                 {
-                    _maxValues[forFirstN, atWeight, itemsLeft] = withCurrentItem;
+                    _maxValues[forFirstN, atWeight, itemsChosen] = withCurrentItem;
                 }
             }
 
             //LogFile.WriteLine("Maximum value after choosing {3} of first {0} items at weight {1} is {2}",
             //    forFirstN,
             //    atWeight,
-            //    _maxValues[forFirstN, atWeight, itemsLeft].TotalValue(),
-            //    itemsLeft);
+            //    _maxValues[forFirstN, atWeight, itemsChosen].TotalValue(),
+            //    itemsChosen);
             //LogFile.WriteLine("Items: {0}, Count: {1}, Total weight: {2}",
-            //    _maxValues[forFirstN, atWeight, itemsLeft].ItemNames(),
-            //    _maxValues[forFirstN, atWeight, itemsLeft].ItemCount(),
-            //    _maxValues[forFirstN, atWeight, itemsLeft].TotalWeight());
+            //    _maxValues[forFirstN, atWeight, itemsChosen].ItemNames(),
+            //    _maxValues[forFirstN, atWeight, itemsChosen].ItemCount(),
+            //    _maxValues[forFirstN, atWeight, itemsChosen].TotalWeight());
 
-            return _maxValues[forFirstN, atWeight, itemsLeft];
+            return _maxValues[forFirstN, atWeight, itemsChosen];
         }
 
         public void LogDataValues()
