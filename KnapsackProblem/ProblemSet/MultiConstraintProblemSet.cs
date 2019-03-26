@@ -2,15 +2,13 @@
 
 namespace KnapsackProblem.ProblemSet
 {
-    public class MultiConstraintProblemSet : IProblemSet
+    public class MultiConstraintProblemSet : ProblemSet
     {
-        public Knapsack Knapsack { get; set; }
-        public List<Item> DataSet { get; set; }
-
         public MultiConstraintProblemSet()
         {
             Knapsack = new Knapsack(15, 3, false);
-            DataSet = InitialiseItems();
+            var items = InitialiseItems();
+            DataSet = SortByUnitProfitDescending(items);
         }
 
         public List<Item> InitialiseItems()

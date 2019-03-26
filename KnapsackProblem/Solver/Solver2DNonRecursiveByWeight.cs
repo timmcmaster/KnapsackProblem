@@ -9,14 +9,14 @@ namespace KnapsackProblem.Solver
     /// Implements non-recursive dynamic programming algorithm for 0-1 knapsack problem with single objective
     /// see: https://en.wikipedia.org/wiki/Knapsack_problem
     /// </summary>
-    public class NonRecursiveSolver2D : ISolver
+    public class Solver2DNonRecursiveByWeight : ISolver
     {
         // define max values for first N items at given weight, after choosing K
         private readonly MaxValueGroup[,] _maxValues;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
-        public NonRecursiveSolver2D(Knapsack knapsack, List<Item> items)
+        public Solver2DNonRecursiveByWeight(Knapsack knapsack, List<Item> items)
         {
             _knapsack = knapsack;
             _items = items;
@@ -31,6 +31,7 @@ namespace KnapsackProblem.Solver
         public void Solve()
         {
             CalculateNonRecursive();
+            WriteSolutionAndData();
         }
 
         public void CalculateNonRecursive()
@@ -51,7 +52,7 @@ namespace KnapsackProblem.Solver
                     // Calculate m[i,j] which is the maximum value that can be obtained at weight j after looking at first i elements in list
 
                     // if current item weight is greater than weight being calculated, don't add the value
-                    if (_items[i-1].Weight > weight)
+                    if (_items[i - 1].Weight > weight)
                     {
                         // maximum value is maximum before we added this item to the list
                         _maxValues[i, weight] = new MaxValueGroup(_maxValues[i - 1, weight]);
@@ -59,7 +60,8 @@ namespace KnapsackProblem.Solver
                     else
                     {
                         // get the value that would result in weight we are at, then add new item 
-                        MaxValueGroup withCurrentItem = new MaxValueGroup(_maxValues[i - 1, weight - _items[i-1].Weight]).Add(_items[i - 1]);
+                        MaxValueGroup withCurrentItem =
+                            new MaxValueGroup(_maxValues[i - 1, weight - _items[i - 1].Weight]).Add(_items[i - 1]);
 
                         // if including this item results in a higher value, use that value
                         if (withCurrentItem.TotalValue() > _maxValues[i - 1, weight].TotalValue())
@@ -72,12 +74,16 @@ namespace KnapsackProblem.Solver
                         }
                     }
 
-                    Console.WriteLine("Maximum value for first {0} items at weight {1} is {2}", i, weight, _maxValues[i, weight].TotalValue());
-                    Console.WriteLine("Items: {0}, Count: {1}, Total weight: {2}", _maxValues[i, weight].ItemNames(), _maxValues[i, weight].ItemCount(), _maxValues[i, weight].TotalWeight());
+                    Console.WriteLine("Maximum value for first {0} items at weight {1} is {2}", i, weight,
+                        _maxValues[i, weight].TotalValue());
+                    Console.WriteLine("Items: {0}, Count: {1}, Total weight: {2}", _maxValues[i, weight].ItemNames(),
+                        _maxValues[i, weight].ItemCount(), _maxValues[i, weight].TotalWeight());
                 }
             }
+        }
 
-            // if count is not equal to max count then exclude it
+        private void WriteSolutionAndData()
+        {
             MaxValueGroup requiredValueGroup = _maxValues[_items.Count, _knapsack.Capacity];
 
             Console.WriteLine("Maximum value for first {0} items at weight {1} is {2}", _items.Count, _knapsack.Capacity, requiredValueGroup.TotalValue());
@@ -121,21 +127,5 @@ namespace KnapsackProblem.Solver
                 LogFile.WriteLine(sb.ToString());
             }
         }
-
-        /*
-                public string GroupAsText(MaxValueGroup group)
-                {
-                    if (@group is null)
-                    {
-                        return "null";
-                    }
-
-                    return string.Format("Items: {0}, Count: {1}, Total weight: {2}",
-                        @group.ItemNames(),
-                        @group.ItemCount(),
-                        @group.TotalWeight());
-                }
-         */
-
     }
 }

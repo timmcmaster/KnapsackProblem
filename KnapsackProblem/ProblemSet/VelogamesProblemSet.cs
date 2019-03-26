@@ -5,11 +5,8 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace KnapsackProblem.ProblemSet
 {
-    public class VelogamesProblemSet : IProblemSet
+    public class VelogamesProblemSet : ProblemSet
     {
-        public Knapsack Knapsack { get; set; }
-        public List<Item> DataSet { get; set; }
-
         public VelogamesProblemSet()
         {
             Knapsack = new Knapsack(100, 9, false);
@@ -24,7 +21,7 @@ namespace KnapsackProblem.ProblemSet
                 LogFile.WriteLine("{0}, {1}, {2}", rider.Name, rider.Weight, rider.Value);
             }
 
-            DataSet = allRiders;
+            DataSet = SortByUnitProfitDescending(allRiders);
         }
 
         public static List<Item> LoadVelogamesDataFromFile(string fileName)

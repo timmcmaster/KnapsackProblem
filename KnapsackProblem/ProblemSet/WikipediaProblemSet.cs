@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace KnapsackProblem.ProblemSet
 {
-    public class WikipediaProblemSet : IProblemSet
+    public class WikipediaProblemSet : ProblemSet
     {
-        public Knapsack Knapsack { get; set; }
-        public List<Item> DataSet { get; set; }
-
         public WikipediaProblemSet()
         {
             Knapsack = new Knapsack(67, 99, false);
-            DataSet = InitialiseItems();
+            var items = InitialiseItems();
+            DataSet = SortByUnitProfitDescending(items);
         }
 
         public List<Item> InitialiseItems()

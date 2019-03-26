@@ -8,14 +8,14 @@ namespace KnapsackProblem.Solver
     /// Implements recursive dynamic programming algorithm for 0-1 knapsack problem with single objective
     /// see: https://en.wikipedia.org/wiki/Knapsack_problem
     /// </summary>
-    public class RecursiveSolver2D : ISolver
+    public class Solver2DRecursiveByWeight : ISolver
     {
         // define max values for first N items at given weight, after choosing K
         private readonly MaxValueGroup[,] _maxValues;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
-        public RecursiveSolver2D(Knapsack knapsack, List<Item> items)
+        public Solver2DRecursiveByWeight(Knapsack knapsack, List<Item> items)
         {
             _knapsack = knapsack;
             _items = items;

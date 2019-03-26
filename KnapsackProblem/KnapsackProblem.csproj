@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProblemSet\KellererBookProblemSet.cs" />
+    <Compile Include="ProblemSet\ProblemSet.cs" />
     <Compile Include="Solver\ISolver.cs" />
     <Compile Include="LogFile.cs" />
     <Compile Include="ProblemSet\MultiConstraintProblemSet.cs" />
@@ -51,14 +53,17 @@
     <Compile Include="ProblemSet\WikipediaProblemSet.cs" />
     <Compile Include="MaxValueGroup.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Solver\NonRecursiveSolver2D.cs" />
+    <Compile Include="Solver\Solver2DNonRecursiveByProfit.cs" />
+    <Compile Include="Solver\Solver2DNonRecursiveByWeight.cs" />
     <Compile Include="Solver\NonRecursiveSolver3D.cs" />
     <Compile Include="Solver\RecursiveSolver3D.cs" />
     <Compile Include="Knapsack.cs" />
     <Compile Include="ProblemSet\IProblemSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Solver\RecursiveSolver2D.cs" />
+    <Compile Include="Solver\Solver2DRecursiveByProfit.cs" />
+    <Compile Include="Solver\Solver2DRecursiveByWeight.cs" />
+    <Compile Include="Solver\UtilFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
