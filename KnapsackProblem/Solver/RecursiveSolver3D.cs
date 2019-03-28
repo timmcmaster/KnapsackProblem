@@ -10,7 +10,7 @@ namespace KnapsackProblem.Solver
     public class RecursiveSolver3D : ISolver
     {
         // define max values for first N items at given weight, after choosing K
-        private readonly MaxValueGroup[,,] _maxValues;
+        private readonly ItemGroup[,,] _maxValues;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
@@ -23,7 +23,7 @@ namespace KnapsackProblem.Solver
             var numberOfWeights = knapsack.Capacity + 1;
             var numberOfItemsInList = items.Count + 1;
             var numberOfItemsAllowed = knapsack.AllowedItems + 1;
-            _maxValues = new MaxValueGroup[numberOfItemsInList, numberOfWeights, numberOfItemsAllowed];
+            _maxValues = new ItemGroup[numberOfItemsInList, numberOfWeights, numberOfItemsAllowed];
 
         }
 
@@ -34,7 +34,7 @@ namespace KnapsackProblem.Solver
 
         public void CalculateRecursive()
         {
-            MaxValueGroup requiredValueGroup = GetMaxValue(_items.Count, _knapsack.Capacity, _knapsack.AllowedItems);
+            ItemGroup requiredValueGroup = GetMaxValue(_items.Count, _knapsack.Capacity, _knapsack.AllowedItems);
 
             LogFile.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
                 _knapsack.AllowedItems,
@@ -60,12 +60,12 @@ namespace KnapsackProblem.Solver
 
         }
 
-        public MaxValueGroup GetMaxValue(int forFirstN, int atWeight, int itemsChosen)
+        public ItemGroup GetMaxValue(int forFirstN, int atWeight, int itemsChosen)
         {
             // value at 0 items or 0 weight, or 0 items chosen is 0
             if (forFirstN == 0 || atWeight <= 0 || itemsChosen == 0)
             {
-                return new MaxValueGroup();
+                return new ItemGroup();
             }
 
             // calculate the previous value
@@ -78,11 +78,11 @@ namespace KnapsackProblem.Solver
             if (_items[forFirstN - 1].Weight > atWeight)
             {
                 _maxValues[forFirstN, atWeight, itemsChosen] =
-                    new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
+                    new ItemGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
             }
             else
             {
-                MaxValueGroup withoutCurrentItem =
+                ItemGroup withoutCurrentItem =
                     _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight, itemsChosen - 1];
                 // if we haven't calculated max without current item, do it now
                 if (withoutCurrentItem is null)
@@ -94,12 +94,12 @@ namespace KnapsackProblem.Solver
                 }
 
                 // add item to prev
-                MaxValueGroup withCurrentItem = new MaxValueGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
+                ItemGroup withCurrentItem = new ItemGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
 
                 if (_maxValues[forFirstN - 1, atWeight, itemsChosen].TotalValue() >= withCurrentItem.TotalValue())
                 {
                     _maxValues[forFirstN, atWeight, itemsChosen] =
-                        new MaxValueGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
+                        new ItemGroup(_maxValues[forFirstN - 1, atWeight, itemsChosen]);
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace KnapsackProblem.Solver
             }
         }
 
-        public string GroupAsText(MaxValueGroup group)
+        public string GroupAsText(ItemGroup group)
         {
             if (group is null)
             {

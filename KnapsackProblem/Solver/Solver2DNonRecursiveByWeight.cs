@@ -12,7 +12,7 @@ namespace KnapsackProblem.Solver
     public class Solver2DNonRecursiveByWeight : ISolver
     {
         // define max values for first N items at given weight, after choosing K
-        private readonly MaxValueGroup[,] _maxValues;
+        private readonly ItemGroup[,] _maxValues;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
@@ -24,7 +24,7 @@ namespace KnapsackProblem.Solver
             // define max values for first N items at given weight
             var numberOfWeights = knapsack.Capacity + 1;
             var numberOfItemsInList = items.Count + 1;
-            _maxValues = new MaxValueGroup[numberOfItemsInList, numberOfWeights];
+            _maxValues = new ItemGroup[numberOfItemsInList, numberOfWeights];
 
         }
 
@@ -37,17 +37,17 @@ namespace KnapsackProblem.Solver
         public void CalculateNonRecursive()
         {
             // for each weight from 0 to knapsack.Capacity
-            for (int weight = 0; weight <= _knapsack.Capacity; weight++)
+            for (int weight = 0; weight <= _maxValues.GetUpperBound(1); weight++)
             {
                 // maximum value for first 0 items at any given weight is 0
-                _maxValues[0, weight] = new MaxValueGroup();
+                _maxValues[0, weight] = new ItemGroup();
             }
 
             // for each number of items from 1 to numberOfItems
-            for (int i = 1; i <= _items.Count; i++)
+            for (int i = 1; i <= _maxValues.GetUpperBound(0); i++)
             {
                 // for each weight from 0 to knapsack.Capacity
-                for (int weight = 0; weight <= _knapsack.Capacity; weight++)
+                for (int weight = 0; weight <= _maxValues.GetUpperBound(1); weight++)
                 {
                     // Calculate m[i,j] which is the maximum value that can be obtained at weight j after looking at first i elements in list
 
@@ -55,13 +55,13 @@ namespace KnapsackProblem.Solver
                     if (_items[i - 1].Weight > weight)
                     {
                         // maximum value is maximum before we added this item to the list
-                        _maxValues[i, weight] = new MaxValueGroup(_maxValues[i - 1, weight]);
+                        _maxValues[i, weight] = new ItemGroup(_maxValues[i - 1, weight]);
                     }
                     else
                     {
                         // get the value that would result in weight we are at, then add new item 
-                        MaxValueGroup withCurrentItem =
-                            new MaxValueGroup(_maxValues[i - 1, weight - _items[i - 1].Weight]).Add(_items[i - 1]);
+                        ItemGroup withCurrentItem =
+                            new ItemGroup(_maxValues[i - 1, weight - _items[i - 1].Weight]).Add(_items[i - 1]);
 
                         // if including this item results in a higher value, use that value
                         if (withCurrentItem.TotalValue() > _maxValues[i - 1, weight].TotalValue())
@@ -70,7 +70,7 @@ namespace KnapsackProblem.Solver
                         }
                         else
                         {
-                            _maxValues[i, weight] = new MaxValueGroup(_maxValues[i - 1, weight]);
+                            _maxValues[i, weight] = new ItemGroup(_maxValues[i - 1, weight]);
                         }
                     }
 
@@ -84,7 +84,7 @@ namespace KnapsackProblem.Solver
 
         private void WriteSolutionAndData()
         {
-            MaxValueGroup requiredValueGroup = _maxValues[_items.Count, _knapsack.Capacity];
+            ItemGroup requiredValueGroup = _maxValues[_items.Count, _knapsack.Capacity];
 
             Console.WriteLine("Maximum value for first {0} items at weight {1} is {2}", _items.Count, _knapsack.Capacity, requiredValueGroup.TotalValue());
             Console.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
@@ -96,7 +96,7 @@ namespace KnapsackProblem.Solver
             DumpArrayToLog(m => m.ItemCount());
         }
 
-        private void DumpArrayToLog(Func<MaxValueGroup,int> getValue)
+        private void DumpArrayToLog(Func<ItemGroup,int> getValue)
         {
             StringBuilder sb = new StringBuilder();
 

@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace KnapsackProblem
 {
-    public class MaxValueGroup
+    public class ItemGroup
     {
         private readonly List<Item> _includedItems;
 
-        public MaxValueGroup()
+        public ItemGroup()
         {
             _includedItems = new List<Item>();
         }
 
-        public MaxValueGroup(MaxValueGroup item)
+        public ItemGroup(ItemGroup item)
         {
             _includedItems = new List<Item>(item._includedItems);
         }
 
-        public MaxValueGroup Add(Item item)
+        public ItemGroup Add(Item item)
         {
             _includedItems.Add(item);
             return this;

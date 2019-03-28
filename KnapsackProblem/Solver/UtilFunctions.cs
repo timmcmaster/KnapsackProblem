@@ -25,7 +25,7 @@ namespace KnapsackProblem.Solver
         /// <returns></returns>
         public static double LP_Approximation(List<Item> items, Knapsack knapsack)
         {
-            MaxValueGroup group = new MaxValueGroup();
+            ItemGroup group = new ItemGroup();
 
             List<Item> sortedItems = UtilFunctions.SortByUnitProfitDescending(items);
 
