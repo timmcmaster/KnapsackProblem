@@ -119,45 +119,6 @@ namespace KnapsackProblem.Solver
             return _maxValues[forFirstN, atWeight];
         }
 
-        protected int GetProfitUpperBound()
-        {
-            // worst case upper bound is double the LP approximation 
-            return (int)Math.Ceiling(LP_Approximation() * 2);
-        }
-
-        /// <summary>
-        /// Uses greedy algorithm to get approximation of highest value
-        /// </summary>
-        /// <returns></returns>
-        protected double LP_Approximation()
-        {
-            ItemGroup group = new ItemGroup();
-
-            List<Item> sortedItems = UtilFunctions.SortByUnitProfitDescending(_items);
-
-            Item criticalItem = new Item("",0,0);
-            double criticalItemFraction = 0;
-
-            // Fill until we reach critical item
-            foreach (Item item in sortedItems)
-            {
-                if (group.TotalWeight() + item.Weight <= _knapsack.Capacity)
-                {
-                    group.AddItem(item);
-                }
-                else // we have reached critical item
-                {
-                    criticalItem = item;
-                    criticalItemFraction = (_knapsack.Capacity - group.TotalWeight()) / (double)criticalItem.Weight;
-                    break;
-                }
-            }
-
-            // Add fractional value of next item
-            double maxProfitValue = group.TotalValue() + criticalItem.Value * criticalItemFraction;
-            return maxProfitValue;
-        }
-
         //protected int Greedy()
         //{
         //    ItemGroup group = new ItemGroup();
