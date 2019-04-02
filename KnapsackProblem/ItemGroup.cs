@@ -63,5 +63,10 @@ namespace KnapsackProblem
 
             return sbNames.ToString();
         }
+
+        public static ItemGroup CopyOrNull(ItemGroup itemGroup)
+        {
+            return itemGroup == null ? null : new ItemGroup(itemGroup);
+        }
     }
 }

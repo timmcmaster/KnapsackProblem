@@ -21,7 +21,7 @@ namespace KnapsackProblem
 
             Console.WriteLine(Directory.GetCurrentDirectory());
 
-            ISolver solver = new Solver2DNonRecursiveByProfit(problemSet.Knapsack, problemSet.DataSet);
+            ISolver solver = new Solver2DNonRecursiveByProfitUsingItemGroup(problemSet.Knapsack, problemSet.DataSet);
 
             solver.Solve();
 
