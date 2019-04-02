@@ -6,16 +6,18 @@ namespace KnapsackProblem.Solver
 {
     /// <summary>
     /// Implements non-recursive dynamic programming algorithm for 0-1 knapsack problem with single objective
+    /// Uses integer array of weights at given profit and count
+	/// Note that this will not give items in minimal collection
     /// see: https://en.wikipedia.org/wiki/Knapsack_problem
     /// </summary>
-    public class Solver2DNonRecursiveByProfit : ISolver
+    public class Solver2DNonRecursiveByProfitUsingInt : ISolver
     {
         // define min weights for first N items at given profit, after choosing K
         private readonly int[,] _minWeightInt;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
-        public Solver2DNonRecursiveByProfit(Knapsack knapsack, List<Item> items)
+        public Solver2DNonRecursiveByProfitUsingInt(Knapsack knapsack, List<Item> items)
         {
             _knapsack = knapsack;
             _items = items;
@@ -26,7 +28,6 @@ namespace KnapsackProblem.Solver
             var numberOfProfitValues = profitUpperBound + 1;
             var numberOfItemsInList = items.Count + 1;
             _minWeightInt = new int[numberOfItemsInList, numberOfProfitValues];
-
         }
 
         public void Solve()
@@ -76,14 +77,12 @@ namespace KnapsackProblem.Solver
                             _minWeightInt[i, profit] = weightOnPreviousIteration;
                         }
                     }
-
-                    //Console.WriteLine("Minimum weight for first {0} items at profit {1} is {2}", i, p,
-                    //    _minWeightInt[i, p]);
-                    //Console.WriteLine("Items: {0}, Count: {1}, Total weight: {2}", _minWeightInt[i, weight].ItemNames(),
-                    //    _minWeightInt[i, weight].ItemCount(), _minWeightInt[i, weight].TotalWeight());
                 }
             }
+        }
 
+        private void WriteSolutionAndData()
+        {
             // Maximal Solution at any given iteration (value of i) is the highest value of p where total weight < capacity
             for (int i = _minWeightInt.GetUpperBound(0); i >= 0; i--)
             {
@@ -91,26 +90,13 @@ namespace KnapsackProblem.Solver
                 {
                     if (_minWeightInt[i, p] <= _knapsack.Capacity)
                     {
-                        Console.WriteLine("Optimal profit for first {0} items is {1} at weight {2}", i, p,  _minWeightInt[i, p]);
+                        Console.WriteLine("Optimal profit for first {0} items is {1} at weight {2}", i, p, _minWeightInt[i, p]);
                         break; // out of for p loop
                     }
                 }
             }
-        }
-
-        private void WriteSolutionAndData()
-        {
-            //ItemGroup requiredValueGroup = _minWeightInt[_items.Count, _knapsack.Capacity];
-            //int minValue = _minWeightInt[_items.Count, _knapsack.Capacity];
-
-            //Console.WriteLine("Maximum value for first {0} items at weight {1} is {2}", _items.Count, _knapsack.Capacity, requiredValueGroup.TotalValue());
-            //Console.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
-            //Console.WriteLine("Item names: {0}", requiredValueGroup.ItemNames());
-            //Console.WriteLine("Total weight: {0}", requiredValueGroup.TotalWeight());
-            //Console.WriteLine("Total value: {0}", requiredValueGroup.TotalValue());
 
             DumpArrayToLog(m => m);
-            //DumpArrayToLog(m => m.ItemCount());
         }
 
         private void DumpArrayToLog(Func<int, int> getValue)

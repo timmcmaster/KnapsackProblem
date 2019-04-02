@@ -53,7 +53,7 @@
     <Compile Include="ProblemSet\WikipediaProblemSet.cs" />
     <Compile Include="ItemGroup.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Solver\Solver2DNonRecursiveByProfit.cs" />
+    <Compile Include="Solver\Solver2DNonRecursiveByProfitUsingInt.cs" />
     <Compile Include="Solver\Solver2DNonRecursiveByProfitUsingItemGroup.cs" />
     <Compile Include="Solver\Solver2DNonRecursiveByWeight.cs" />
     <Compile Include="Solver\NonRecursiveSolver3D.cs" />

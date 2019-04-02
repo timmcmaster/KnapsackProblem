@@ -34,31 +34,7 @@ namespace KnapsackProblem.Solver
         public void CalculateRecursive()
         {
             ItemGroup requiredValueGroup = GetMaxValue(_items.Count, _knapsack.Capacity);
-
-            LogFile.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
-                _knapsack.AllowedItems,
-                _items.Count,
-                _knapsack.Capacity,
-                requiredValueGroup.TotalValue()
-            );
-            LogFile.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
-            LogFile.WriteLine("Item names: {0}", requiredValueGroup.ItemNames());
-            LogFile.WriteLine("Total weight: {0}", requiredValueGroup.TotalWeight());
-            LogFile.WriteLine("Total value: {0}", requiredValueGroup.TotalValue());
-
-            Console.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
-                _knapsack.AllowedItems,
-                _items.Count,
-                _knapsack.Capacity,
-                requiredValueGroup.TotalValue()
-            );
-            Console.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
-            Console.WriteLine("Item names: {0}", requiredValueGroup.ItemNames());
-            Console.WriteLine("Total weight: {0}", requiredValueGroup.TotalWeight());
-            Console.WriteLine("Total value: {0}", requiredValueGroup.TotalValue());
-
-            DumpArrayToLog(m => m.TotalValue());
-            DumpArrayToLog(m => m.ItemCount());
+            WriteSolutionAndData(requiredValueGroup);
         }
 
         public ItemGroup GetMaxValue(int forFirstN, int atWeight)
@@ -115,6 +91,34 @@ namespace KnapsackProblem.Solver
             //    _maxValues[forFirstN, atWeight, itemsLeft].TotalWeight());
 
             return _maxValues[forFirstN, atWeight];
+        }
+
+        private void WriteSolutionAndData(ItemGroup requiredValueGroup)
+        {
+            LogFile.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
+                _knapsack.AllowedItems,
+                _items.Count,
+                _knapsack.Capacity,
+                requiredValueGroup.TotalValue()
+            );
+            LogFile.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
+            LogFile.WriteLine("Item names: {0}", requiredValueGroup.ItemNames());
+            LogFile.WriteLine("Total weight: {0}", requiredValueGroup.TotalWeight());
+            LogFile.WriteLine("Total value: {0}", requiredValueGroup.TotalValue());
+
+            Console.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
+                _knapsack.AllowedItems,
+                _items.Count,
+                _knapsack.Capacity,
+                requiredValueGroup.TotalValue()
+            );
+            Console.WriteLine("No of items: {0}", requiredValueGroup.ItemCount());
+            Console.WriteLine("Item names: {0}", requiredValueGroup.ItemNames());
+            Console.WriteLine("Total weight: {0}", requiredValueGroup.TotalWeight());
+            Console.WriteLine("Total value: {0}", requiredValueGroup.TotalValue());
+
+            DumpArrayToLog(m => m.TotalValue());
+            DumpArrayToLog(m => m.ItemCount());
         }
 
         private void DumpArrayToLog(Func<ItemGroup, int> getValue)
