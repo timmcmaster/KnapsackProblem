@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemGroup\IItemGroup.cs" />
+    <Compile Include="ItemGroup\MinWeightItemGroup.cs" />
     <Compile Include="ProblemSet\KellererBookProblemSet.cs" />
     <Compile Include="ProblemSet\ProblemSet.cs" />
     <Compile Include="Solver\ISolver.cs" />
@@ -51,10 +53,9 @@
     <Compile Include="ProblemSet\NonConformingProblemSet.cs" />
     <Compile Include="ProblemSet\VelogamesProblemSet.cs" />
     <Compile Include="ProblemSet\WikipediaProblemSet.cs" />
-    <Compile Include="ItemGroup.cs" />
+    <Compile Include="ItemGroup\ItemGroup.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Solver\Solver2DNonRecursiveByProfitUsingInt.cs" />
-    <Compile Include="Solver\Solver2DNonRecursiveByProfitUsingItemGroup.cs" />
+    <Compile Include="Solver\Solver2DNonRecursiveByProfit.cs" />
     <Compile Include="Solver\Solver2DNonRecursiveByWeight.cs" />
     <Compile Include="Solver\NonRecursiveSolver3D.cs" />
     <Compile Include="Solver\RecursiveSolver3D.cs" />

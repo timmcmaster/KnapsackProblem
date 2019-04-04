@@ -16,12 +16,12 @@ namespace KnapsackProblem
         {
             Console.WriteLine("Start...");
 
-            //IProblemSet problemSet = new VelogamesProblemSet();
-            IProblemSet problemSet = new KellererBookProblemSet();
+            IProblemSet problemSet = new VelogamesProblemSet();
+            //IProblemSet problemSet = new KellererBookProblemSet();
 
             Console.WriteLine(Directory.GetCurrentDirectory());
 
-            ISolver solver = new Solver2DNonRecursiveByProfitUsingItemGroup(problemSet.Knapsack, problemSet.DataSet);
+            ISolver solver = new Solver2DRecursiveByProfit(problemSet.Knapsack, problemSet.DataSet);
 
             solver.Solve();
 

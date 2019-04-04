@@ -11,7 +11,7 @@ namespace KnapsackProblem.Solver
     public class Solver2DRecursiveByWeight : ISolver
     {
         // define max values for first N items at given weight, after choosing K
-        private readonly ItemGroup[,] _maxValues;
+        private readonly ItemGroup[,] _maxProfitItemGroup;
         private readonly Knapsack _knapsack;
         private readonly List<Item> _items;
 
@@ -21,9 +21,10 @@ namespace KnapsackProblem.Solver
             _items = items;
 
             // define max values for first N items at given weight
-            var numberOfWeights = knapsack.Capacity + 1;
+            var weightUpperBound = _knapsack.Capacity;
+            var numberOfWeights = weightUpperBound + 1;
             var numberOfItemsInList = items.Count + 1;
-            _maxValues = new ItemGroup[numberOfItemsInList, numberOfWeights];
+            _maxProfitItemGroup = new ItemGroup[numberOfItemsInList, numberOfWeights];
         }
 
         public void Solve()
@@ -33,11 +34,11 @@ namespace KnapsackProblem.Solver
 
         public void CalculateRecursive()
         {
-            ItemGroup requiredValueGroup = GetMaxValue(_items.Count, _knapsack.Capacity);
+            ItemGroup requiredValueGroup = GetMaxProfitValue(_items.Count, _knapsack.Capacity);
             WriteSolutionAndData(requiredValueGroup);
         }
 
-        public ItemGroup GetMaxValue(int forFirstN, int atWeight)
+        public ItemGroup GetMaxProfitValue(int forFirstN, int atWeight)
         {
             // value at 0 items or 0 weight, or 0 items chosen is 0
             if (forFirstN == 0 || atWeight <= 0)
@@ -46,51 +47,42 @@ namespace KnapsackProblem.Solver
             }
 
             // calculate the previous value
-            if (_maxValues[forFirstN - 1, atWeight] is null)
+            if (_maxProfitItemGroup[forFirstN - 1, atWeight] is null)
             {
-                _maxValues[forFirstN - 1, atWeight] = GetMaxValue(forFirstN - 1, atWeight);
+                _maxProfitItemGroup[forFirstN - 1, atWeight] = GetMaxProfitValue(forFirstN - 1, atWeight);
             }
 
             // if current item weight is greater than weight being calculated, don't add the value
             if (_items[forFirstN - 1].Weight > atWeight)
             {
-                _maxValues[forFirstN, atWeight] = new ItemGroup(_maxValues[forFirstN - 1, atWeight]);
+                _maxProfitItemGroup[forFirstN, atWeight] = new ItemGroup(_maxProfitItemGroup[forFirstN - 1, atWeight]);
             }
             else
             {
-                ItemGroup withoutCurrentItem = _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight];
+                var itemGroupExcludingCurrent = _maxProfitItemGroup[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight];
 
                 // if we haven't calculated max without current item, do it now
-                if (withoutCurrentItem is null)
+                if (itemGroupExcludingCurrent is null)
                 {
-                    withoutCurrentItem = GetMaxValue(forFirstN - 1, atWeight - _items[forFirstN - 1].Weight);
-                    _maxValues[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight] = withoutCurrentItem;
+                    itemGroupExcludingCurrent = GetMaxProfitValue(forFirstN - 1, atWeight - _items[forFirstN - 1].Weight);
+                    _maxProfitItemGroup[forFirstN - 1, atWeight - _items[forFirstN - 1].Weight] = itemGroupExcludingCurrent;
                 }
 
-                // add item to prev
-                ItemGroup withCurrentItem = new ItemGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
+                int profitAtWeightExcludingCurrentItem = itemGroupExcludingCurrent.TotalValue();
+                int profitOfCurrentItem = _items[forFirstN - 1].Value;
+                int profitOnPreviousIteration = _maxProfitItemGroup[forFirstN - 1, atWeight].TotalValue();
 
-                if (withCurrentItem.TotalValue() > _maxValues[forFirstN - 1, atWeight].TotalValue())
+                if (profitAtWeightExcludingCurrentItem + profitOfCurrentItem > profitOnPreviousIteration)
                 {
-                    _maxValues[forFirstN, atWeight] = withCurrentItem;
+                    _maxProfitItemGroup[forFirstN, atWeight] = (ItemGroup) new ItemGroup(itemGroupExcludingCurrent).Add(_items[forFirstN - 1]); ;
                 }
                 else
                 {
-                    _maxValues[forFirstN, atWeight] = new ItemGroup(_maxValues[forFirstN - 1, atWeight]);
+                    _maxProfitItemGroup[forFirstN, atWeight] = new ItemGroup(_maxProfitItemGroup[forFirstN - 1, atWeight]);
                 }
             }
 
-            //LogFile.WriteLine("Maximum value after choosing {3} of first {0} items at weight {1} is {2}",
-            //    forFirstN,
-            //    atWeight,
-            //    _maxValues[forFirstN, atWeight, itemsLeft].TotalValue(),
-            //    itemsLeft);
-            //LogFile.WriteLine("Items: {0}, Count: {1}, Total weight: {2}",
-            //    _maxValues[forFirstN, atWeight, itemsLeft].ItemNames(),
-            //    _maxValues[forFirstN, atWeight, itemsLeft].ItemCount(),
-            //    _maxValues[forFirstN, atWeight, itemsLeft].TotalWeight());
-
-            return _maxValues[forFirstN, atWeight];
+            return _maxProfitItemGroup[forFirstN, atWeight];
         }
 
         private void WriteSolutionAndData(ItemGroup requiredValueGroup)
@@ -128,7 +120,7 @@ namespace KnapsackProblem.Solver
             // write indices at top
             sb.Append("  |");
 
-            for (int j = 0; j < _maxValues.GetLength(1); j++)
+            for (int j = 0; j < _maxProfitItemGroup.GetLength(1); j++)
             {
                 sb.AppendFormat(" {0,4:###0}", j);
             }
@@ -137,21 +129,21 @@ namespace KnapsackProblem.Solver
 
 
             // for each item from 0 to number of items
-            for (int i = 0; i < _maxValues.GetLength(0); i++)
+            for (int i = 0; i < _maxProfitItemGroup.GetLength(0); i++)
             {
                 sb.Clear();
                 sb.AppendFormat("{0,2:#0}", i);
                 sb.Append("[");
 
-                for (int j = 0; j < _maxValues.GetLength(1); j++)
+                for (int j = 0; j < _maxProfitItemGroup.GetLength(1); j++)
                 {
-                    if (_maxValues[i, j] is null)
+                    if (_maxProfitItemGroup[i, j] is null)
                     {
                         sb.Append("    x");
                     }
                     else
                     {
-                        sb.AppendFormat(" {0,4:###0}", getValue(_maxValues[i, j]));
+                        sb.AppendFormat(" {0,4:###0}", getValue(_maxProfitItemGroup[i, j]));
                     }
                 }
                 sb.Append("]");

@@ -94,7 +94,7 @@ namespace KnapsackProblem.Solver
                 }
 
                 // add item to prev
-                ItemGroup withCurrentItem = new ItemGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
+                ItemGroup withCurrentItem = (ItemGroup) new ItemGroup(withoutCurrentItem).Add(_items[forFirstN - 1]);
 
                 if (_maxValues[forFirstN - 1, atWeight, itemsChosen].TotalValue() >= withCurrentItem.TotalValue())
                 {
