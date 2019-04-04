@@ -21,7 +21,7 @@ namespace KnapsackProblem.Solver
             _items = items;
 
             // define max values for first N items at given weight
-            var profitUpperBound = UtilFunctions.GetProfitUpperBound(_items, _knapsack);
+            var profitUpperBound = UtilFunctions.GetProfitUpperBound_KP(_items, _knapsack);
             var numberOfProfitValues = profitUpperBound + 1;
             var numberOfItemsInList = items.Count + 1;
             _minWeightItemGroup = new MinWeightItemGroup[numberOfItemsInList, numberOfProfitValues];

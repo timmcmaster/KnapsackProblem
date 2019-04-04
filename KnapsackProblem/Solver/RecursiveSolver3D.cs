@@ -34,7 +34,31 @@ namespace KnapsackProblem.Solver
 
         public void CalculateRecursive()
         {
-            ItemGroup requiredValueGroup = GetMaxValue(_items.Count, _knapsack.Capacity, _knapsack.AllowedItems);
+            int currentCapacity = _knapsack.Capacity;
+
+            ItemGroup requiredValueGroup = GetMaxValue(_items.Count, currentCapacity, _knapsack.AllowedItems);
+
+            // Actual solution is not simply finding a value at capacity and allowed items
+            // because we are only solving for kKP (not E-kKP)
+            // Actually want to find value at AllowedItems, but potentially at lower capacity, with ItemCount = AllowedItems
+            while (requiredValueGroup.ItemCount() < _knapsack.AllowedItems)
+            {
+                if (--currentCapacity == 0)
+                {
+                    break;
+                }
+
+                requiredValueGroup = GetMaxValue(_items.Count, currentCapacity, _knapsack.AllowedItems);
+            }
+
+            if (currentCapacity == 0)
+            {
+                Console.WriteLine(
+                    "There is no valid solution with capacity constraint of {0} and count constraint of {1}.",
+                    _knapsack.Capacity, _knapsack.AllowedItems);
+
+                return;
+            }
 
             LogFile.WriteLine("Maximum value after choosing {0} of first {1} items at weight {2} is {3}",
                 _knapsack.AllowedItems,

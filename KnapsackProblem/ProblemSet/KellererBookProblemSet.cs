@@ -6,7 +6,7 @@ namespace KnapsackProblem.ProblemSet
     {
         public KellererBookProblemSet()
         {
-            Knapsack = new Knapsack(9, 99, false);
+            Knapsack = new Knapsack(9, 2, false);
             var items = InitialiseItems();
             DataSet = SortByUnitProfitDescending(items);
         }

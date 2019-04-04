@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,11 @@ namespace KnapsackProblem
             Name = name;
             Weight = weight;
             Value = value;
+        }
+
+        public double ProfitPerUnitWeight()
+        {
+            return this.Value / (double) this.Weight;
         }
     }
 }
