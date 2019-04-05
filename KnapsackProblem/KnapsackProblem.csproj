@@ -65,6 +65,7 @@
     <Compile Include="Solver\Solver2DRecursiveByProfit.cs" />
     <Compile Include="Solver\Solver2DRecursiveByWeight.cs" />
     <Compile Include="Solver\Solver3DNonRecursiveByWeight.cs" />
+    <Compile Include="Solver\Solver3DRecursiveByWeight.cs" />
     <Compile Include="Solver\UtilFunctions.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KnapsackProblem.ProblemSet;
 using KnapsackProblem.Solver;
-using Microsoft.VisualBasic.FileIO;
 
 namespace KnapsackProblem
 {
@@ -21,8 +16,7 @@ namespace KnapsackProblem
 
             Console.WriteLine(Directory.GetCurrentDirectory());
 
-            //ISolver solver = new Solver2DRecursiveByProfit(problemSet.Knapsack, problemSet.DataSet);
-            ISolver solver = new Solver3DNonRecursiveByWeight(problemSet.Knapsack, problemSet.DataSet);
+            ISolver solver = new Solver3DRecursiveByWeight(problemSet.Knapsack, problemSet.DataSet);
 
             solver.Solve();
 
