@@ -57,7 +57,6 @@
     <Compile Include="Item.cs" />
     <Compile Include="Solver\Solver2DNonRecursiveByProfit.cs" />
     <Compile Include="Solver\Solver2DNonRecursiveByWeight.cs" />
-    <Compile Include="Solver\NonRecursiveSolver3D.cs" />
     <Compile Include="Solver\RecursiveSolver3D.cs" />
     <Compile Include="Knapsack.cs" />
     <Compile Include="ProblemSet\IProblemSet.cs" />
