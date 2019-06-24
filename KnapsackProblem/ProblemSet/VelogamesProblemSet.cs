@@ -11,9 +11,9 @@ namespace KnapsackProblem.ProblemSet
         {
             Knapsack = new Knapsack(100, 9, false);
 
-            List<Item> allRiders = LoadVelogamesDataFromFile("CatalunyaVelogamesData.csv");
-            List<Item> rankedRiders = LoadPCSDataFromFile("CatalunyaRidersByGC.csv");
-            MatchRiders(allRiders, rankedRiders);
+            List<Item> allRiders = LoadVelogamesDataFromFile("SuisseVelogamesResults.csv");
+            //List<Item> rankedRiders = LoadPCSDataFromFile("CatalunyaRidersByGC.csv");
+            //MatchRiders(allRiders, rankedRiders);
 
             LogFile.WriteLine("Rider, Weight, Value");
             foreach (var rider in allRiders)
@@ -49,7 +49,7 @@ namespace KnapsackProblem.ProblemSet
                             int riderEarnedPoints = int.Parse(fields[2]);
                             int riderCost = int.Parse(fields[3]);
 
-                            Item rider = new Item(riderName, riderCost, 0);
+                            Item rider = new Item(riderName, riderCost, riderEarnedPoints);
 
                             allRiders.Add(rider);
                         }
